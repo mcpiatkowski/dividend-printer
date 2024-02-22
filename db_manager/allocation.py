@@ -21,7 +21,12 @@ def select_pie_only(portfolio: pd.DataFrame) -> pd.DataFrame:
 
 def create_symbol(portfolio: pd.DataFrame) -> pd.DataFrame:
     """Map Trading212 ticker to FMP symbol."""
-    return portfolio.assign(SYMBOL=portfolio["ticker"].str.split("_").str[0].replace({"HCP1": "HCP", "DMYQ": "PL"}))
+    return portfolio.assign(
+        SYMBOL=portfolio["ticker"]
+        .str.split("_")
+        .str[0]
+        .replace({"HCP1": "HCP", "DMYQ": "PL"})
+    )
 
 
 def get_columns(portfolio: pd.DataFrame) -> pd.DataFrame:
@@ -31,10 +36,11 @@ def get_columns(portfolio: pd.DataFrame) -> pd.DataFrame:
 
 def create_allocation_table() -> None:
     """Create and replace allocation table."""
-    conn = sqlite3.connect('dividend_printer.db')
+    conn = sqlite3.connect("dividend_printer.db")
     c = conn.cursor()
-    c.execute('DROP TABLE IF EXISTS allocation')
-    c.execute("""
+    c.execute("DROP TABLE IF EXISTS allocation")
+    c.execute(
+        """
     CREATE TABLE allocation (
         ID INTEGER PRIMARY KEY,
         RECORD_DATE TEXT,
@@ -42,7 +48,8 @@ def create_allocation_table() -> None:
         QUANTITY REAL,
         AVERAGE_PRICE REAL
     )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 

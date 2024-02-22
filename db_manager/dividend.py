@@ -5,15 +5,18 @@ import requests
 import pandas as pd
 from collections import namedtuple
 
-DividendData = namedtuple(typename="DividendData", field_names=["data", "ticker", "available"])
+DividendData = namedtuple(
+    typename="DividendData", field_names=["data", "ticker", "available"]
+)
 
 
 def create_dividend_table() -> None:
     """Create and replace dividend table."""
-    conn = sqlite3.connect('dividend_printer.db')
+    conn = sqlite3.connect("dividend_printer.db")
     c = conn.cursor()
-    c.execute('DROP TABLE IF EXISTS dividend')
-    c.execute("""
+    c.execute("DROP TABLE IF EXISTS dividend")
+    c.execute(
+        """
     CREATE TABLE dividend (
         ID INTEGER PRIMARY KEY,
         RECORD_DATE TEXT,
@@ -22,9 +25,10 @@ def create_dividend_table() -> None:
         DIVIDEND_RECORD_DATE TEXT,
         PAYMENT_DATE TEXT,
         DECLARATION_DATE TEXT,
-        TICKER TEXT
+        SYMBOL TEXT
     )
-    """)
+    """
+    )
     conn.commit()
     conn.close()
 
@@ -45,13 +49,16 @@ def transform_(_dividends: DividendData) -> pd.DataFrame:
         .reset_index(drop=True)
         .drop(columns="label")
         .assign(ticker=_dividends.ticker)
-        .rename(columns={
-            "date": "record_date",
-            "adjDividend": "adj_dividend",
-            "recordDate": "dividend_record_date",
-            "paymentDate": "payment_date",
-            "declarationDate": "declaration_date"
-        })
+        .rename(
+            columns={
+                "date": "record_date",
+                "adjDividend": "adj_dividend",
+                "recordDate": "dividend_record_date",
+                "paymentDate": "payment_date",
+                "declarationDate": "declaration_date",
+                "ticker": "symbol",
+            }
+        )
     )
 
 
