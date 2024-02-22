@@ -5,9 +5,7 @@ import requests
 import pandas as pd
 from collections import namedtuple
 
-DividendData = namedtuple(
-    typename="DividendData", field_names=["data", "ticker", "available"]
-)
+DividendData = namedtuple(typename="DividendData", field_names=["data", "ticker", "available"])
 
 
 def create_dividend_table() -> None:

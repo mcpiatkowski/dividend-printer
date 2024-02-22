@@ -21,12 +21,7 @@ def select_pie_only(portfolio: pd.DataFrame) -> pd.DataFrame:
 
 def create_symbol(portfolio: pd.DataFrame) -> pd.DataFrame:
     """Map Trading212 ticker to FMP symbol."""
-    return portfolio.assign(
-        SYMBOL=portfolio["ticker"]
-        .str.split("_")
-        .str[0]
-        .replace({"HCP1": "HCP", "DMYQ": "PL"})
-    )
+    return portfolio.assign(SYMBOL=portfolio["ticker"].str.split("_").str[0].replace({"HCP1": "HCP", "DMYQ": "PL"}))
 
 
 def get_columns(portfolio: pd.DataFrame) -> pd.DataFrame:

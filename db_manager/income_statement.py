@@ -70,9 +70,7 @@ def get_quarterly_income_statement(ticker: str) -> pd.DataFrame:
 def insert_into_income_statement_table(income_statement: pd.DataFrame) -> None:
     """Insert into the income_statement table."""
     conn = sqlite3.connect("dividend_printer.db")
-    income_statement.to_sql(
-        name="income_statement", con=conn, if_exists="append", index=False
-    )
+    income_statement.to_sql(name="income_statement", con=conn, if_exists="append", index=False)
     conn.commit()
     conn.close()
 
